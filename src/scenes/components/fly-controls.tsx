@@ -5,7 +5,7 @@ import * as THREE from 'three';
 const FlyControls = () => {
   const { camera, gl } = useThree();
   const keysPressed = useRef<Set<string>>(new Set());
-  const velocity = useRef(new THREE.Vector3());
+  // const _velocity = useRef(new THREE.Vector3());
   const direction = useRef(new THREE.Vector3());
   const euler = useRef(new THREE.Euler(0, 0, 0, 'YXZ'));
   const isLocked = useRef(false);
@@ -53,7 +53,7 @@ const FlyControls = () => {
     };
   }, [camera, gl]);
 
-  useFrame((state, delta) => {
+  useFrame((_state, delta) => {
     const speed = 5;
     direction.current.set(0, 0, 0);
 
