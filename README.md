@@ -1,75 +1,118 @@
-# React + TypeScript + Vite
+# R3F Scenes
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+![React](https://img.shields.io/badge/React-19.2.0-61DAFB?logo=react&logoColor=white)
+![TypeScript](https://img.shields.io/badge/TypeScript-5.9.3-3178C6?logo=typescript&logoColor=white)
+![Three.js](https://img.shields.io/badge/Three.js-0.181.2-000000?logo=three.js&logoColor=white)
+![Vite](https://img.shields.io/badge/Vite-7.2.2-646CFF?logo=vite&logoColor=white)
 
-Currently, two official plugins are available:
+A collection of 3D scenes built with React Three Fiber (R3F), Three.js, and TypeScript.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Features
 
-## React Compiler
+- **React Three Fiber** - Declarative Three.js scenes in React
+- **TypeScript** - Full type safety
+- **Vite** - Fast development and HMR
+- **React Router** - Multi-scene navigation
+- **React Compiler** - Optimized rendering performance
+- **Custom Controls** - First-person fly camera with WASD + mouse controls
 
-The React Compiler is enabled on this template. See [this documentation](https://react.dev/learn/react-compiler) for more information.
+## Scenes
 
-Note: This will impact Vite dev & build performances.
+### SEELE Conference Room
 
-## Expanding the ESLint configuration
+Recreation of the iconic SEELE conference room from Neon Genesis Evangelion: End of Evangelion.
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+**Features:**
+- 12 monoliths arranged in a circle with numbered text labels
+- Dark atmospheric lighting with minimal ambient light
+- Gendo's desk with 3D model and spotlight
+- White light strips at the base of each monolith
+- Red text with LED-style appearance
+- Stairs model with custom materials
+- Full shadow support
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+**Controls:**
+- **Click canvas** - Lock pointer for camera control
+- **Mouse** - Look around
+- **W/S** - Move forward/backward
+- **A/D** - Strafe left/right
+- **Space** - Fly up
+- **Shift** - Fly down
+- **ESC** - Unlock pointer
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+## Getting Started
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+### Installation
+
+```bash
+npm install
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+### Development
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```bash
+npm run dev
 ```
+
+Server runs on `http://0.0.0.0:5173` (accessible on local network)
+
+### Build
+
+```bash
+npm run build
+```
+
+### Preview Production Build
+
+```bash
+npm run preview
+```
+
+## Project Structure
+
+```
+src/
+├── App.tsx                           # React Router setup
+├── main.tsx                          # App entry point
+└── scenes/
+    ├── components/
+    │   └── fly-controls.tsx          # Custom first-person camera controls
+    └── seele/
+        ├── seele.tsx                 # Main scene setup
+        ├── monoliths.tsx             # Monolith components with text
+        ├── desk.tsx                  # Gendo's desk area
+        └── models.tsx                # 3D model loaders
+```
+
+## Models
+
+Place 3D models (`.glb` format) in `public/models/`:
+- `gendo.glb` - Character model
+- `stairs.glb` - Staircase model
+
+## Fonts
+
+Place font files in `public/fonts/`:
+- `Coolvetica Rg.otf` - Used for "SEELE" and "SOUND ONLY" text
+- `MacEnvy DB Regular.ttf` - Used for monolith numbers
+
+## Tech Stack
+
+- **React** 19.2.0
+- **React Three Fiber** 9.4.0
+- **Three.js** 0.181.2
+- **@react-three/drei** 10.7.7 - Helper utilities
+- **React Router** 7.9.6
+- **TypeScript** 5.9.3
+- **Vite** 7.2.2
+
+## Performance Notes
+
+- React Compiler is enabled for automatic memoization
+- Shadows are enabled globally (may impact performance on low-end devices)
+- Device pixel ratio is automatically detected and applied
+- Antialiasing is enabled for smoother edges
+
+## License
+
+Private project
