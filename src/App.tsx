@@ -1,9 +1,8 @@
-import { useState, useRef, type ComponentProps } from 'react';
-import { Canvas, useThree } from '@react-three/fiber';
-import { PerspectiveCamera, PointerLockControls, Grid, useHelper, Text } from '@react-three/drei';
+import { Canvas } from '@react-three/fiber';
+import { PerspectiveCamera, PointerLockControls, Text } from '@react-three/drei';
+import type { ComponentProps } from 'react';
 
 const App = () => {
-  const meshRef = useRef(undefined);
   const groundSize = 100;
   const monolithRadius = 25;
   const monoliths = ['01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12'];
@@ -13,7 +12,12 @@ const App = () => {
       dpr={typeof window !== 'undefined' ? window.devicePixelRatio : 1}
       gl={{ antialias: true }}
     >
-      <PerspectiveCamera makeDefault position={[monolithRadius / 2 + 2, 2, 0]} fov={60} />
+      <PerspectiveCamera
+        makeDefault
+        position={[monolithRadius / 2 + 2, 2, 0]}
+        fov={60}
+        rotation={[0, Math.PI / 2, 0]}
+      />
 
       <color attach="background" args={[0x0a0a0a]} />
       {/* <fog attach="fog" args={[0x0a0a0a, 10, 30]} /> */}
