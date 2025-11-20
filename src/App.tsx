@@ -88,22 +88,23 @@ const Monolith = ({ number, x, z, rotation, ...props }: MonolithProps) => {
         <Text
           position={[textX, 3.5, 0]}
           rotation-y={-Math.PI / 2}
-          fontSize={0.7}
-          color="#ff0000"
+          fontSize={0.65}
+          color="#850000"
           anchorX="center"
           anchorY="middle"
+          font="/fonts/Coolvetica Rg.otf"
         >
           SEELE
         </Text>
 
         <Text
-          position={[textX, 2.3, 0]}
+          position={[textX, 2.6, 0]}
           rotation-y={-Math.PI / 2}
           fontSize={1.8}
-          color="#ff0000"
+          color="#9b0000"
           anchorX="center"
           anchorY="middle"
-          // font="/fonts/bold.woff"
+          font="/fonts/MacEnvy DB Regular.ttf"
         >
           {number}
         </Text>
@@ -112,10 +113,11 @@ const Monolith = ({ number, x, z, rotation, ...props }: MonolithProps) => {
           position={[textX, 0.75, 0]}
           rotation-y={-Math.PI / 2}
           fontSize={0.5}
-          color="#ff0000"
+          color="#850000"
           anchorX="center"
           anchorY="middle"
           textAlign="center"
+          font="/fonts/Coolvetica Rg.otf"
         >
           SOUND{'\n'}ONLY
         </Text>
