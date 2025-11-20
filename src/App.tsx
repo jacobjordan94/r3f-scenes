@@ -1,10 +1,11 @@
 import { useState, useRef, type ComponentProps } from 'react';
 import { Canvas, useThree } from '@react-three/fiber';
-import { PerspectiveCamera, OrbitControls, Grid, useHelper } from '@react-three/drei';
+import { PerspectiveCamera, OrbitControls, Grid, useHelper, Text } from '@react-three/drei';
 
 const App = () => {
   const meshRef = useRef(undefined);
-  const groundSize = 25;
+  const groundSize = 100;
+  const towerRadius = 25;
   const towers = ['01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12'];
   return (
     <Canvas
@@ -36,7 +37,7 @@ const App = () => {
         <meshPhongMaterial color={0x000} depthWrite={false} />
       </mesh>
 
-      <Towers groundSize={groundSize} towers={towers} />
+      <Towers towerRadius={towerRadius} towers={towers} />
 
       {/* Grid */}
       {/* <Grid args={[40, 20]} cellColor={0x000000} sectionColor={0x000000} fadeStrength={0.2} /> */}
@@ -47,10 +48,10 @@ const App = () => {
   );
 }
 
-type TowersProps = { groundSize: number, towers: string[] };
-const Towers = ({ groundSize, towers }: TowersProps) => {
+type TowersProps = { towerRadius: number, towers: string[] };
+const Towers = ({ towerRadius, towers }: TowersProps) => {
   return towers.map((towerNumber, i) => {
-    const radius = groundSize / 2; // - size
+    const radius = towerRadius / 2; // - size
     const angle = (2 * Math.PI * i) / towers.length;
     const x = radius * Math.cos(angle);
     const z = radius * Math.sin(angle);
@@ -67,17 +68,59 @@ type TowerProps = ComponentProps<'mesh'> & {
   rotation: number,
 };
 const Tower = ({ number, x, z, rotation, ...props }: TowerProps) => {
+  // Calculate position for text on the front face of the tower
+  const textX = -0.26; // Just in front of the tower face (tower width/2 + small offset)
+
   return (
     <group>
       <mesh
         {...props} castShadow
-        position={[x, 5.5, z]}
-        scale={[0.5, 10, 3]}
+        position={[x, 7.5, z]}
+        scale={[0.5, 14, 3]}
         rotation-y={rotation}
       >
         <boxGeometry />
         <meshPhongMaterial color={0x1a1a1a} />
       </mesh>
+
+      {/* Text labels on tower face */}
+      <group position={[x, 9.75, z]} rotation-y={rotation}>
+        <Text
+          position={[textX, 3.5, 0]}
+          rotation-y={-Math.PI / 2}
+          fontSize={0.7}
+          color="#ff0000"
+          anchorX="center"
+          anchorY="middle"
+        >
+          SEELE
+        </Text>
+
+        <Text
+          position={[textX, 2.3, 0]}
+          rotation-y={-Math.PI / 2}
+          fontSize={1.8}
+          color="#ff0000"
+          anchorX="center"
+          anchorY="middle"
+          // font="/fonts/bold.woff"
+        >
+          {number}
+        </Text>
+
+        <Text
+          position={[textX, 0.75, 0]}
+          rotation-y={-Math.PI / 2}
+          fontSize={0.5}
+          color="#ff0000"
+          anchorX="center"
+          anchorY="middle"
+          textAlign="center"
+        >
+          SOUND{'\n'}ONLY
+        </Text>
+      </group>
+
       <TowerLight x={x} z={z} rotation={rotation} />
     </group>
   );
