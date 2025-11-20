@@ -1,6 +1,6 @@
 import { useState, useRef, type ComponentProps } from 'react';
 import { Canvas, useThree } from '@react-three/fiber';
-import { PerspectiveCamera, OrbitControls, Grid, useHelper, Text } from '@react-three/drei';
+import { PerspectiveCamera, PointerLockControls, Grid, useHelper, Text } from '@react-three/drei';
 
 const App = () => {
   const meshRef = useRef(undefined);
@@ -13,7 +13,7 @@ const App = () => {
       dpr={typeof window !== 'undefined' ? window.devicePixelRatio : 1}
       gl={{ antialias: true }}
     >
-      <PerspectiveCamera makeDefault position={[4, 4, 4]} fov={45} />
+      <PerspectiveCamera makeDefault position={[monolithRadius / 2 + 2, 2, 0]} fov={60} />
 
       <color attach="background" args={[0x0a0a0a]} />
       {/* <fog attach="fog" args={[0x0a0a0a, 10, 30]} /> */}
@@ -43,7 +43,7 @@ const App = () => {
       {/* <Grid args={[40, 20]} cellColor={0x000000} sectionColor={0x000000} fadeStrength={0.2} /> */}
 
       {/* Controls */}
-      <OrbitControls target={[0, 0.5, 0]} />
+      <PointerLockControls />
     </Canvas>
   );
 }
