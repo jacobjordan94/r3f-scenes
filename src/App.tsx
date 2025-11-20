@@ -98,22 +98,31 @@ type TowerLightProps = {
   rotation: number;
 };
 const TowerLight = ({ x, z, rotation }: TowerLightProps) => {
-  const lightRef = useRef<any>(undefined);
   // Tower base dimensions: width=0.5, depth=3
   return (
     <group position={[x, 0, z]} rotation-y={rotation}>
-      <rectAreaLight
-        ref={lightRef}
-        rotation-x={-Math.PI / 2}
-        width={0.5}
-        height={3}
-        intensity={25}
+      {/* Directional light pointing upward - parallel rays, no cone */}
+      <directionalLight
+        position={[0, 0.1, 0]}
+        target-position={[0, 10, 0]}
+        intensity={0.5}
+        castShadow
         color={0xffffff}
+        shadow-camera-left={-0.3}
+        shadow-camera-right={0.3}
+        shadow-camera-top={1.5}
+        shadow-camera-bottom={-1.5}
       />
-      {/* Visual representation */}
-      <mesh rotation-x={-Math.PI / 2}>
+      {/* Visual representation - glowing strip on ground */}
+      <mesh position-y={0.02} rotation-x={-Math.PI / 2}>
         <planeGeometry args={[0.5, 3]} />
-        <meshBasicMaterial color={0xffffff} side={2} toneMapped={false} />
+        <meshStandardMaterial
+          color={0xffffff}
+          emissive={0xffffff}
+          emissiveIntensity={2}
+          side={2}
+          toneMapped={false}
+        />
       </mesh>
     </group>
   );
