@@ -137,7 +137,7 @@ const Monolith = ({ number, x, z, rotation, ...props }: MonolithProps) => {
 const Desk = ({...props}) => {
   return (
     <group {...props} position-y={0}>
-      <Gendo position-y={1} />
+      <Gendo position-y={0.624} />
       <mesh castShadow position-y={.25} scale={[1, 0.75, 3]}>
         <boxGeometry />
         <meshPhongMaterial color={0x1a1a1a} />
