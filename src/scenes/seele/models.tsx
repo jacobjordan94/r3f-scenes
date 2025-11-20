@@ -1,8 +1,20 @@
 import { useGLTF } from "@react-three/drei";
 import * as THREE from 'three';
+import { useEffect } from 'react';
 
 const Gendo = ({...props}) => {
   const { scene: gendo } = useGLTF('/models/gendo.glb');
+
+  useEffect(() => {
+    // Enable shadows for all meshes in the model
+    gendo.traverse((child: any) => {
+      if (child.isMesh) {
+        child.castShadow = true;
+        child.receiveShadow = true;
+      }
+    });
+  }, [gendo]);
+
   return <primitive {...props} object={gendo} />
 };
 const Stairs = ({...props}) => {
