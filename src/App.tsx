@@ -84,7 +84,7 @@ const Monolith = ({ number, x, z, rotation, ...props }: MonolithProps) => {
       </mesh>
 
       {/* Text labels on monolith face */}
-      <group position={[x, 9.75, z]} rotation-y={rotation}>
+      <group position={[x, 10, z]} rotation-y={rotation}>
         <Text
           position={[textX, 3.5, 0]}
           rotation-y={-Math.PI / 2}
