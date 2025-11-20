@@ -3,7 +3,7 @@ import { PerspectiveCamera } from '@react-three/drei';
 import FlyControls from '../components/fly-controls';
 import Monoliths from './monoliths';
 
-const SteeleScene = () => {
+const SeeleScene = () => {
   const groundSize = 100;
   const monolithRadius = 25;
   const monoliths = ['01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12'];
@@ -53,4 +53,4 @@ const SteeleScene = () => {
   );
 }
 
-export default SteeleScene;
+export default SeeleScene;
