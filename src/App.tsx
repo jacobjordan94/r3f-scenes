@@ -62,7 +62,7 @@ const Monoliths = ({ monolithRadius, monoliths }: MonolithsProps) => {
     const x = radius * Math.cos(angle);
     const z = radius * Math.sin(angle);
     const rotation = -angle; // Rotate to face center
-    if(monolithNumber === '01') return <Desk key={monolithNumber} position-x={x} position-z={z} rotation-y={rotation} />
+    if(monolithNumber === '01') return <Desk key={monolithNumber} position-x={x} position-z={z} rotation-y={-rotation} />
     return <Monolith key={monolithNumber} x={x} z={z} rotation={rotation} number={monolithNumber} />;
   });
 };
@@ -137,7 +137,7 @@ const Monolith = ({ number, x, z, rotation, ...props }: MonolithProps) => {
 const Desk = ({...props}) => {
   return (
     <group {...props} position-y={0}>
-      <Gendo position-y={0.624} />
+      <Gendo position-y={0.624} position-x={-0.35}rotation={[0, -(Math.PI / 2), 0]} />
       <mesh castShadow position-y={.25} scale={[1, 0.75, 3]}>
         <boxGeometry />
         <meshPhongMaterial color={0x1a1a1a} />
