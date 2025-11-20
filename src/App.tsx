@@ -5,8 +5,8 @@ import { PerspectiveCamera, OrbitControls, Grid, useHelper, Text } from '@react-
 const App = () => {
   const meshRef = useRef(undefined);
   const groundSize = 100;
-  const towerRadius = 25;
-  const towers = ['01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12'];
+  const monolithRadius = 25;
+  const monoliths = ['01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12'];
   return (
     <Canvas
       shadows
@@ -37,7 +37,7 @@ const App = () => {
         <meshPhongMaterial color={0x000} depthWrite={false} />
       </mesh>
 
-      <Towers towerRadius={towerRadius} towers={towers} />
+      <Monoliths monolithRadius={monolithRadius} monoliths={monoliths} />
 
       {/* Grid */}
       {/* <Grid args={[40, 20]} cellColor={0x000000} sectionColor={0x000000} fadeStrength={0.2} /> */}
@@ -48,28 +48,28 @@ const App = () => {
   );
 }
 
-type TowersProps = { towerRadius: number, towers: string[] };
-const Towers = ({ towerRadius, towers }: TowersProps) => {
-  return towers.map((towerNumber, i) => {
-    const radius = towerRadius / 2; // - size
-    const angle = (2 * Math.PI * i) / towers.length;
+type MonolithsProps = { monolithRadius: number, monoliths: string[] };
+const Monoliths = ({ monolithRadius, monoliths }: MonolithsProps) => {
+  return monoliths.map((monolithNumber, i) => {
+    const radius = monolithRadius / 2; // - size
+    const angle = (2 * Math.PI * i) / monoliths.length;
     const x = radius * Math.cos(angle);
     const z = radius * Math.sin(angle);
     const rotation = -angle; // Rotate to face center
-    if(towerNumber === '01') return <Desk key={towerNumber} position-x={x} position-z={z} rotation-y={rotation} />
-    return <Tower key={towerNumber} x={x} z={z} rotation={rotation} number={towerNumber} />;
+    if(monolithNumber === '01') return <Desk key={monolithNumber} position-x={x} position-z={z} rotation-y={rotation} />
+    return <Monolith key={monolithNumber} x={x} z={z} rotation={rotation} number={monolithNumber} />;
   });
 };
 
-type TowerProps = ComponentProps<'mesh'> & {
+type MonolithProps = ComponentProps<'mesh'> & {
   number: string;
   x: number,
   z: number,
   rotation: number,
 };
-const Tower = ({ number, x, z, rotation, ...props }: TowerProps) => {
-  // Calculate position for text on the front face of the tower
-  const textX = -0.26; // Just in front of the tower face (tower width/2 + small offset)
+const Monolith = ({ number, x, z, rotation, ...props }: MonolithProps) => {
+  // Calculate position for text on the front face of the monolith
+  const textX = -0.26; // Just in front of the monolith face (monolith width/2 + small offset)
 
   return (
     <group>
@@ -83,7 +83,7 @@ const Tower = ({ number, x, z, rotation, ...props }: TowerProps) => {
         <meshPhongMaterial color={0x1a1a1a} />
       </mesh>
 
-      {/* Text labels on tower face */}
+      {/* Text labels on monolith face */}
       <group position={[x, 9.75, z]} rotation-y={rotation}>
         <Text
           position={[textX, 3.5, 0]}
@@ -121,7 +121,7 @@ const Tower = ({ number, x, z, rotation, ...props }: TowerProps) => {
         </Text>
       </group>
 
-      <TowerLight x={x} z={z} rotation={rotation} />
+      <MonolithLight x={x} z={z} rotation={rotation} />
     </group>
   );
 };
@@ -135,13 +135,13 @@ const Desk = ({...props}) => {
   );
 };
 
-type TowerLightProps = {
+type MonolithLightProps = {
   x: number;
   z: number;
   rotation: number;
 };
-const TowerLight = ({ x, z, rotation }: TowerLightProps) => {
-  // Tower base dimensions: width=0.5, depth=3
+const MonolithLight = ({ x, z, rotation }: MonolithLightProps) => {
+  // Monolith base dimensions: width=0.5, depth=3
   return (
     <group position={[x, 0, z]} rotation-y={rotation}>
       {/* Directional light pointing upward - parallel rays, no cone */}
