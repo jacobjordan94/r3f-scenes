@@ -1,6 +1,6 @@
 import { useState, useRef, type ComponentProps } from 'react';
 import { Canvas, useThree } from '@react-three/fiber';
-import { PerspectiveCamera, OrbitControls, Grid } from '@react-three/drei';
+import { PerspectiveCamera, OrbitControls, Grid, useHelper } from '@react-three/drei';
 
 const App = () => {
   const meshRef = useRef(undefined);
@@ -13,16 +13,16 @@ const App = () => {
       gl={{ antialias: true }}
     >
       <PerspectiveCamera makeDefault position={[4, 4, 4]} fov={45} />
-      
-      <color attach="background" args={[0xa0a0a0]} />
-      {/* <fog attach="fog" args={[0xa0a0a0, 20, 20]} /> */}
+
+      <color attach="background" args={[0x0a0a0a]} />
+      {/* <fog attach="fog" args={[0x0a0a0a, 10, 30]} /> */}
 
       {/* Lights */}
-      <hemisphereLight position={[0, 20, 0]} intensity={3} args={[0xffffff, 0x444444]} />
-      
+      <ambientLight intensity={0.1} />
+
       <directionalLight
         position={[0, 20, 10]}
-        intensity={3}
+        intensity={0.8}
         castShadow
         shadow-camera-top={2}
         shadow-camera-bottom={-2}
@@ -41,11 +41,6 @@ const App = () => {
       {/* Grid */}
       {/* <Grid args={[40, 20]} cellColor={0x000000} sectionColor={0x000000} fadeStrength={0.2} /> */}
 
-      <mesh ref={meshRef} castShadow position-y={0} position-x={0} position-z={0}>
-        <boxGeometry />
-        <meshPhongMaterial color={0x00ffff} />
-      </mesh>
-
       {/* Controls */}
       <OrbitControls target={[0, 0.5, 0]} />
     </Canvas>
@@ -61,19 +56,30 @@ const Towers = ({ groundSize, towers }: TowersProps) => {
     const z = radius * Math.sin(angle);
     const rotation = -angle; // Rotate to face center
     if(towerNumber === '01') return <Desk key={towerNumber} position-x={x} position-z={z} rotation-y={rotation} />
-    return <Tower key={towerNumber} position-x={x} position-z={z} rotation-y={rotation} number={towerNumber} />;
+    return <Tower key={towerNumber} x={x} z={z} rotation={rotation} number={towerNumber} />;
   });
 };
 
 type TowerProps = ComponentProps<'mesh'> & {
   number: string;
+  x: number,
+  z: number,
+  rotation: number,
 };
-const Tower = ({ ...props }: TowerProps) => {
+const Tower = ({ number, x, z, rotation, ...props }: TowerProps) => {
   return (
-    <mesh {...props} castShadow position-y={5} scale={[0.5, 10, 3]}>
-      <boxGeometry />
-      <meshPhongMaterial color={0xfff} />
-    </mesh>
+    <group>
+      <mesh
+        {...props} castShadow
+        position={[x, 5.5, z]}
+        scale={[0.5, 10, 3]}
+        rotation-y={rotation}
+      >
+        <boxGeometry />
+        <meshPhongMaterial color={0x1a1a1a} />
+      </mesh>
+      <TowerLight x={x} z={z} rotation={rotation} />
+    </group>
   );
 };
 
@@ -81,8 +87,35 @@ const Desk = ({...props}) => {
   return (
     <mesh {...props} castShadow position-y={.25} scale={[1, 0.75, 3]}>
       <boxGeometry />
-      <meshPhongMaterial color={0xfff} />
+      <meshPhongMaterial color={0x1a1a1a} />
     </mesh>
+  );
+};
+
+type TowerLightProps = {
+  x: number;
+  z: number;
+  rotation: number;
+};
+const TowerLight = ({ x, z, rotation }: TowerLightProps) => {
+  const lightRef = useRef<any>(undefined);
+  // Tower base dimensions: width=0.5, depth=3
+  return (
+    <group position={[x, 0, z]} rotation-y={rotation}>
+      <rectAreaLight
+        ref={lightRef}
+        rotation-x={-Math.PI / 2}
+        width={0.5}
+        height={3}
+        intensity={25}
+        color={0xffffff}
+      />
+      {/* Visual representation */}
+      <mesh rotation-x={-Math.PI / 2}>
+        <planeGeometry args={[0.5, 3]} />
+        <meshBasicMaterial color={0xffffff} side={2} toneMapped={false} />
+      </mesh>
+    </group>
   );
 };
 
