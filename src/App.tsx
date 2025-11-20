@@ -5,8 +5,8 @@ const App = () => {
   return (
     <BrowserRouter>
       <Routes>
-        <Route index element={ <Navigate to="steele" /> } />
-        <Route path='steele' element={ <SeeleScene /> } />
+        <Route index element={ <Navigate to="seele" /> } />
+        <Route path='seele' element={ <SeeleScene /> } />
       </Routes>
     </BrowserRouter>
   );
