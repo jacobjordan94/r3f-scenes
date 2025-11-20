@@ -1,6 +1,8 @@
-import { Canvas } from '@react-three/fiber';
-import { PerspectiveCamera, PointerLockControls, Text } from '@react-three/drei';
+import { Canvas, useFrame, useThree } from '@react-three/fiber';
+import { PerspectiveCamera, Text, useGLTF } from '@react-three/drei';
 import type { ComponentProps } from 'react';
+import { useEffect, useRef } from 'react';
+import * as THREE from 'three';
 
 const App = () => {
   const groundSize = 100;
@@ -47,7 +49,7 @@ const App = () => {
       {/* <Grid args={[40, 20]} cellColor={0x000000} sectionColor={0x000000} fadeStrength={0.2} /> */}
 
       {/* Controls */}
-      <PointerLockControls />
+      <FlyControls />
     </Canvas>
   );
 }
@@ -134,10 +136,13 @@ const Monolith = ({ number, x, z, rotation, ...props }: MonolithProps) => {
 
 const Desk = ({...props}) => {
   return (
-    <mesh {...props} castShadow position-y={.25} scale={[1, 0.75, 3]}>
-      <boxGeometry />
-      <meshPhongMaterial color={0x1a1a1a} />
-    </mesh>
+    <group {...props} position-y={0}>
+      <Gendo position-y={1} />
+      <mesh castShadow position-y={.25} scale={[1, 0.75, 3]}>
+        <boxGeometry />
+        <meshPhongMaterial color={0x1a1a1a} />
+      </mesh>
+    </group>
   );
 };
 
@@ -175,6 +180,91 @@ const MonolithLight = ({ x, z, rotation }: MonolithLightProps) => {
       </mesh>
     </group>
   );
+};
+
+const Gendo = ({...props}) => {
+  const { scene: gendo } = useGLTF('/models/gendo.glb');
+  return <primitive {...props} object={gendo} scale={0.25} />
+};
+
+const FlyControls = () => {
+  const { camera, gl } = useThree();
+  const keysPressed = useRef<Set<string>>(new Set());
+  const velocity = useRef(new THREE.Vector3());
+  const direction = useRef(new THREE.Vector3());
+  const euler = useRef(new THREE.Euler(0, 0, 0, 'YXZ'));
+  const isLocked = useRef(false);
+
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      keysPressed.current.add(e.key.toLowerCase());
+    };
+
+    const handleKeyUp = (e: KeyboardEvent) => {
+      keysPressed.current.delete(e.key.toLowerCase());
+    };
+
+    const handleMouseMove = (e: MouseEvent) => {
+      if (!isLocked.current) return;
+
+      const sensitivity = 0.002;
+      euler.current.setFromQuaternion(camera.quaternion);
+      euler.current.y -= e.movementX * sensitivity;
+      euler.current.x -= e.movementY * sensitivity;
+      euler.current.x = Math.max(-Math.PI / 2, Math.min(Math.PI / 2, euler.current.x));
+      camera.quaternion.setFromEuler(euler.current);
+    };
+
+    const handleClick = () => {
+      gl.domElement.requestPointerLock();
+    };
+
+    const handlePointerLockChange = () => {
+      isLocked.current = document.pointerLockElement === gl.domElement;
+    };
+
+    document.addEventListener('keydown', handleKeyDown);
+    document.addEventListener('keyup', handleKeyUp);
+    document.addEventListener('mousemove', handleMouseMove);
+    gl.domElement.addEventListener('click', handleClick);
+    document.addEventListener('pointerlockchange', handlePointerLockChange);
+
+    return () => {
+      document.removeEventListener('keydown', handleKeyDown);
+      document.removeEventListener('keyup', handleKeyUp);
+      document.removeEventListener('mousemove', handleMouseMove);
+      gl.domElement.removeEventListener('click', handleClick);
+      document.removeEventListener('pointerlockchange', handlePointerLockChange);
+    };
+  }, [camera, gl]);
+
+  useFrame((state, delta) => {
+    const speed = 5;
+    direction.current.set(0, 0, 0);
+
+    // Forward/backward
+    if (keysPressed.current.has('w')) direction.current.z -= 1;
+    if (keysPressed.current.has('s')) direction.current.z += 1;
+
+    // Left/right
+    if (keysPressed.current.has('a')) direction.current.x -= 1;
+    if (keysPressed.current.has('d')) direction.current.x += 1;
+
+    // Up/down
+    if (keysPressed.current.has(' ')) direction.current.y += 1;
+    if (keysPressed.current.has('shift')) direction.current.y -= 1;
+
+    direction.current.normalize().multiplyScalar(speed * delta);
+
+    // Apply direction relative to camera orientation
+    const moveVector = new THREE.Vector3();
+    moveVector.copy(direction.current);
+    moveVector.applyQuaternion(camera.quaternion);
+
+    camera.position.add(moveVector);
+  });
+
+  return null;
 };
 
 export default App;
