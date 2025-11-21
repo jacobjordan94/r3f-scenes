@@ -2,6 +2,7 @@ import { Canvas } from '@react-three/fiber';
 import { PerspectiveCamera } from '@react-three/drei';
 import FlyControls from '../components/fly-controls';
 import Monoliths from './monoliths';
+import SeeleLogo from './seele-logo';
 
 const SeeleScene = () => {
   const groundSize = 100;
@@ -41,6 +42,8 @@ const SeeleScene = () => {
         <planeGeometry args={[groundSize, groundSize]} />
         <meshPhongMaterial color={0x000} depthWrite={false} />
       </mesh>
+
+      <SeeleLogo />
 
       <Monoliths monolithRadius={monolithRadius} monoliths={monoliths} />
 
