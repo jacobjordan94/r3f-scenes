@@ -37,9 +37,9 @@ const GameboyScene = () => {
     return (
         <>
             <Canvas style={{ position: 'relative', zIndex: 0 }}>
-                <Environment 
-                    files="/public/images/fireplace_4k.hdr" 
-                    background 
+                <Environment
+                    files="/images/fireplace_4k.hdr"
+                    background
                     backgroundIntensity={0.5}
                     backgroundRotation={[0, -Math.PI / 2, 0]}
                     // backgroundBlurriness={0.075}
