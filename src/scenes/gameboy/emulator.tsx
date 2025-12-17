@@ -9,15 +9,15 @@ interface EmulatorProps {
 }
 
 const Emulator = ({ gameUrl, biosUrl, style, className, coreOptions }: EmulatorProps) => {
-  const iframeRef = useRef<HTMLIFrameElement>(null);
-  useEffect(() => {
-      if (!iframeRef.current) return;
+    const iframeRef = useRef<HTMLIFrameElement>(null);
+    useEffect(() => {
+        if (!iframeRef.current) return;
 
-      const iframeDoc = iframeRef.current.contentDocument;
-      if (!iframeDoc) return;
+        const iframeDoc = iframeRef.current.contentDocument;
+        if (!iframeDoc) return;
 
-  // Create the HTML content for the iframe
-  const iframeContent = `
+        // Create the HTML content for the iframe
+        const iframeContent = `
     <!DOCTYPE html>
     <html>
       <head>
@@ -65,12 +65,12 @@ const Emulator = ({ gameUrl, biosUrl, style, className, coreOptions }: EmulatorP
 
               // Merge core options into settings
               const newSettings = {
-                controlSettings: existingSettings.controlSettings || {},
+                ...(existingSettings.controlSettings ? { controlSettings: existingSettings.controlSettings } : {}),
                 settings: {
                   ...(existingSettings.settings || {}),
                   ...coreOptions
                 },
-                cheats: existingSettings.cheats || []
+                ...(existingSettings.cheats ? { cheats: existingSettings.cheats } : {})
               };
 
               // console.log('[EmulatorJS] Writing settings:', newSettings);
@@ -91,27 +91,28 @@ const Emulator = ({ gameUrl, biosUrl, style, className, coreOptions }: EmulatorP
     </html>
   `;
 
-      // Write content to iframe
-      iframeDoc.open();
-      iframeDoc.write(iframeContent);
-      iframeDoc.close();
-  }, [gameUrl, biosUrl, coreOptions]);
+        // Write content to iframe
+        iframeDoc.open();
+        iframeDoc.write(iframeContent);
+        iframeDoc.close();
+    }, [gameUrl, biosUrl, coreOptions]);
 
-  if(!gameUrl) return;
+    if (!gameUrl) return;
 
-  return (
-      <iframe
-          ref={iframeRef}
-          style={{
-              border: 'none',
-              width: '100%',
-              height: '100%',
-              ...style,
-          }}
-          className={className}
-          title="Game Emulator"
-      />
-  );
+    return (
+        <iframe
+            key={gameUrl}
+            ref={iframeRef}
+            style={{
+                border: 'none',
+                width: '100%',
+                height: '100%',
+                ...style,
+            }}
+            className={className}
+            title="Game Emulator"
+        />
+    );
 };
 
 export default Emulator;

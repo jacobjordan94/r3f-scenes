@@ -9,12 +9,12 @@ const Game = ({ currentGame, ...props }: GameProps) => {
     return (
         <Html
             transform
-            distanceFactor={5}
+            distanceFactor={1.49}
             {...props}
             occlude="blending"
         >
-            <div className="game-container" style={{ width: '31vh', height: '29vh', opacity: currentGame ? '100%' : '0%'}}>
-                <Emulator 
+            <div className="game-container" style={{ width: '960px', height: '864px', opacity: currentGame ? '100%' : '0%'}}>
+                <Emulator
                     coreOptions={{
                         gambatte_gb_colorization: 'internal',
                         gambatte_gb_bootloader: 'enabled',
