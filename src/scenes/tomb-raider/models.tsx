@@ -1,6 +1,6 @@
 import * as THREE from 'three'
-import React, { useRef, type JSX } from 'react'
-import { useAnimations, useGLTF } from '@react-three/drei'
+import { useRef, type JSX } from 'react'
+import { useGLTF } from '@react-three/drei'
 import { type GLTF } from 'three-stdlib'
 
 type GLTFShotgunResult = GLTF & {
@@ -117,6 +117,7 @@ type GLTFSunglassesResult = GLTF & {
 }
 
 type SunglassesActionName = 'M000Action'
+// @ts-ignore
 type GLTFSunglassesActions = Record<SunglassesActionName, THREE.AnimationAction>
 const Sunglasses = (props: JSX.IntrinsicElements['group']) => {
     const group = useRef<THREE.Group>(undefined)
@@ -145,7 +146,8 @@ type GLTFKeyResult = GLTF & {
         tile0: THREE.MeshPhysicalMaterial
     }
 }
-type KeyActionName = 'M000Action'
+type KeyActionName = 'M000Action';
+// @ts-ignore
 type GLTFKeyActions = Record<KeyActionName, THREE.AnimationAction>
 
 const Key = (props: JSX.IntrinsicElements['group']) => {
@@ -178,6 +180,7 @@ type GLTFLargeMedipackResult = GLTF & {
     }
 }
 type LargeMedipackActionName = 'M000Action.002' | 'M001Action.001'
+// @ts-ignore
 type GLTFLargeMedipackActions = Record<LargeMedipackActionName, THREE.AnimationAction>
 
 const LargeMedipack = (props: JSX.IntrinsicElements['group']) => {
@@ -229,7 +232,8 @@ type SmallMedipackActionName =
     | 'M003Action'
     | 'M004Action'
     | 'M005Action'
-    | 'M006Action'
+    | 'M006Action';
+// @ts-ignore
 type GLTFSmallMedipackActions = Record<SmallMedipackActionName, THREE.AnimationAction>
 
 const SmallMedipack = (props: JSX.IntrinsicElements['group']) => {
@@ -323,6 +327,7 @@ type GLTFCompassResult = GLTF & {
 }
 
 type CompassActionName = 'M000Action.002' | 'M001Action.002' | 'M002Action.002' | 'M003Action.002';
+// @ts-ignore
 type GLTFCompassActions = Record<CompassActionName, THREE.AnimationAction>;
 const Compass = (props: JSX.IntrinsicElements['group']) => {
     const group = useRef<THREE.Group>(undefined);
@@ -379,6 +384,7 @@ type GLTFPassportResult = GLTF & {
     }
 }
 type PassportActionName = 'M000Action.002';
+// @ts-ignore
 type GLTFPassportActions = Record<PassportActionName, THREE.AnimationAction>;
 const Passport = (props: JSX.IntrinsicElements['group']) => {
     const group = useRef<THREE.Group>(undefined);
@@ -410,7 +416,8 @@ type GLTFHeadphonesCassetteResult = GLTF & {
     }
 }
 
-type HeadphonesCassetteActionName = 'M000Action' | 'M001Action'
+type HeadphonesCassetteActionName = 'M000Action' | 'M001Action';
+// @ts-ignore
 type GLTFHeadphonesCassetteActions = Record<HeadphonesCassetteActionName, THREE.AnimationAction>
 const HeadphonesCassette = (props: JSX.IntrinsicElements['group']) => {
     const group = useRef<THREE.Group>(undefined);
@@ -450,7 +457,8 @@ type GLTFControlsResult = GLTF & {
     }
 }
 
-type ControlsActionName = 'M000Action.001'
+type ControlsActionName = 'M000Action.001';
+// @ts-ignore
 type GLTFControlsActions = Record<ControlsActionName, THREE.AnimationAction>
 
 const Controls = (props: JSX.IntrinsicElements['group']) => {

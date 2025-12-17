@@ -1,9 +1,9 @@
 import { Canvas } from "@react-three/fiber";
 import Models from "./models";
-import { CameraControls, Environment, PerspectiveCamera, Sky } from "@react-three/drei";
+import { Environment, PerspectiveCamera } from "@react-three/drei";
 import Game from "./game";
 import { useMemo, useState } from "react";
-import { Leva, useControls } from "leva";
+import { useControls } from "leva";
 import { animated, useSpring } from "@react-spring/three";
 
 const AnimatedPerspectiveCamera = animated(PerspectiveCamera);
